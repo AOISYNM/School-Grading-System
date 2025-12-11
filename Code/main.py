@@ -10,7 +10,7 @@ def dataReceiver ():
     print("=" * 60)
     print("\nChoose an option:")
     print("1. Read existing file after u have uploaded it")
-    print("2. Create new file and add data manually")\
+    print("2. Create new file and add data manually")
     
     choice = input("\n Enter Choice (1 or 2) : ")
 
@@ -68,7 +68,49 @@ def dataReceiver ():
     else:
         print(" Invalid choice!")
         return None
+def calculateGrades():
+    
+def generateReports():
+    True
+def createVisualizations():
+    True
 
+def main():
+    print("="*60)
+    print("SCHOOL GRADING SYSTEM")
+    print("="*60)
 
+    df = dataReceiver()
+    
+    if df is None:
+        print(" No data loaded. Exiting...")
+        return
+    
+    print("\n" + "="*60)
+    print(" Data Loaded Successfully")
+    print("="*60)
+    print(f"Total Students: {len(df)}")
+    print("\n")
 
-dataReceiver()
+    choice = input("Do you want to proceed with calculations (y/n)? : ")
+    
+    if choice.lower() == 'y':
+        print("\n[1] Calculating grades and statistics...")
+        calculateGrades(df)
+        print(" Calculations complete!")
+        
+        print("\n[2] Generating reports...")
+        generateReports(df)
+        print(" Reports generated!")
+        
+        print("\n[3] Creating visualizations...")
+        createVisualizations(df)
+        print(" Visualizations created!")
+        
+        print("\n" + "="*60)
+        print(" All tasks completed successfully!")
+        print("="*60)
+    else:
+        print("\n Program ended. Data saved!")
+        print("\n  Check Your Output File For The Results")
+
