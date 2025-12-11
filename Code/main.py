@@ -68,8 +68,97 @@ def dataReceiver ():
     else:
         print(" Invalid choice!")
         return None
-def calculateGrades():
+#Function To Calculate Everything
+def calculateGrades(df):
+    subjects = ['math', 'physics', 'chemistry', 'english', 'computer']
     
+
+    df['total_marks'] = df[subjects].sum(axis=1)
+    df['percentage'] = (df['total_marks'] / 500) * 100
+    df['average'] = df[subjects].mean(axis=1)
+
+
+    def get_grade(pct):
+        if pct >= 90: return 'A+'
+        elif pct >= 80: return 'A'
+        elif pct >= 70: return 'B+'
+        elif pct >= 60: return 'B'
+        elif pct >= 50: return 'C+'
+        elif pct >= 40: return 'C'
+        else: return 'F'
+    
+    df['grade'] = df['percentage'].apply(get_grade)
+
+    def get_gpa(pct):
+        if pct >= 90: return 4.0
+        elif pct >= 80: return 3.6
+        elif pct >= 70: return 3.2
+        elif pct >= 60: return 2.8
+        elif pct >= 50: return 2.4
+        elif pct >= 40: return 2.0
+        else: return 0.0
+    
+    df['gpa'] = df['percentage'].apply(get_gpa)
+
+    df['status'] = df[subjects].apply(
+        lambda row: 'Pass' if all(row >= 40) else 'Fail', 
+        axis=1
+    )
+    df['rank'] = df['percentage'].rank(ascending=False, method='min').astype(int)
+
+    # For Saving File
+    import os
+    filename = input("\nEnter filename to save (e.g., students.xlsx): ")
+    filepath = os.path.join('Data', filename)
+    
+    with pd.ExcelWriter(filepath, engine='openpyxl') as writer:
+        # Sheet 1: All student results
+        #This is sorted according to rank
+        df_output = df[[
+            'rank', 'student_id', 'name', 
+            'math', 'physics', 'chemistry', 'english', 'computer',
+            'total_marks', 'percentage', 'average', 'grade', 'gpa', 'status'
+        ]].sort_values('rank')
+        
+        df_output.to_excel(writer, sheet_name='All Students Data', index=False)
+        
+        
+        # Sheet 2: Summary statistics
+        summary = pd.DataFrame({
+            'Metric': [
+                'Total Students',
+                'Students Passed',
+                'Students Failed',
+                'Pass Rate (%)',
+                'Class Average (%)',
+                'Highest Score (%)',
+                'Lowest Score (%)',
+                'Average GPA'
+            ],
+            'Value': [
+                len(df),
+                len(df[df['status'] == 'Pass']),
+                len(df[df['status'] == 'Fail']),
+                round((len(df[df['status'] == 'Pass']) / len(df)) * 100, 2),
+                round(df['percentage'].mean(), 2),
+                round(df['percentage'].max(), 2),
+                round(df['percentage'].min(), 2),
+                round(df['gpa'].mean(), 2)
+            ]
+        })
+        summary.to_excel(writer, sheet_name='Summary', index=False)
+        #Sheet 3 for failed students
+        failed = df[df['status'] == 'Fail'][[
+            'name', 'math', 'physics', 'chemistry', 'english', 'computer', 
+            'percentage', 'status'
+        ]]
+        if len(failed) > 0:
+            failed.to_excel(writer, sheet_name='Failed Students', index=False)
+    
+    return df
+
+
+
 def generateReports():
     True
 def createVisualizations():
@@ -96,7 +185,7 @@ def main():
     
     if choice.lower() == 'y':
         print("\n[1] Calculating grades and statistics...")
-        calculateGrades(df)
+        df = calculateGrades(df)
         print(" Calculations complete!")
         
         print("\n[2] Generating reports...")
