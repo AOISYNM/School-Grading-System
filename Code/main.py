@@ -107,7 +107,7 @@ def calculateGrades(df):
     df['rank'] = df['percentage'].rank(ascending=False, method='min').astype(int)
 
     # For Saving File
-    import os
+    
     filename = input("\nEnter filename to save (e.g., students.xlsx): ")
     filepath = os.path.join('Data', filename)
     
