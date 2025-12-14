@@ -212,6 +212,27 @@ def createVisualizations(df):
     plt.savefig(os.path.join(images_path, 'subject_comparison.png'), dpi=300, bbox_inches='tight')
     plt.close()
 
+    #Subject box plot
+    plt.figure(figsize=(12, 6))
+    subject_data = [df[subject] for subject in subjects]
+    box = plt.boxplot(subject_data, labels=[s.capitalize() for s in subjects], 
+                      patch_artist=True)
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+    for patch, color in zip(box['boxes'], colors):
+        patch.set_facecolor(color)
+        patch.set_alpha(0.7)
+    
+    plt.title('Subject-wise Marks Distribution (Box Plot)', fontsize=16, fontweight='bold')
+    plt.xlabel('Subject', fontsize=12)
+    plt.ylabel('Marks', fontsize=12)
+    plt.ylim(0, 100)
+    plt.grid(axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(os.path.join(images_path, 'subject_boxplot.png'), dpi=300, bbox_inches='tight')
+    plt.close()
+
+    return df
+
 
 def main():
     print("="*60)
