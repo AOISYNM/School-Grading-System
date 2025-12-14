@@ -196,6 +196,22 @@ def createVisualizations(df):
     plt.savefig(os.path.join(images_path, 'pass_fail_distribution.png'), dpi=300, bbox_inches='tight')
     plt.close()
 
+    #Subject Performance Comparison
+    plt.figure(figsize=(14,7))
+    for idx, row in df.nlargest(10, 'percentage').iterrows():
+        plt.plot(subjects, [row[s] for s in subjects], 
+                marker='o', label=row['name'], alpha=0.7, linewidth=2)
+    plt.title('Top 10 Students - Subject Performance Comparison', 
+              fontsize=16, fontweight='bold')
+    plt.xlabel('Subject', fontsize=12)
+    plt.ylabel('Marks', fontsize=12)
+    plt.ylim(0, 100)
+    plt.legend(loc='best', fontsize=9)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(os.path.join(images_path, 'subject_comparison.png'), dpi=300, bbox_inches='tight')
+    plt.close()
+
 
 def main():
     print("="*60)
