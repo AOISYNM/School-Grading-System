@@ -161,11 +161,28 @@ def calculateGrades(df):
 
 def generateReports():
     True
-def createVisualizations():
+def createVisualizations(df):
     #This checks if images folder exists if it doesnot it creates a new one
     images_path = os.path.join('Output','Images')
     if not os.path.exists(images_path):
         os.makedirs(images_path)
+    
+    subjects = ['math', 'physics', 'chemistry', 'english', 'computer']
+
+    #Creating Grade Distribution Chart
+    plt.figure(figsize=(10, 6))
+    grade_counts = df['grade'].value_counts().sort_index() #Sorting For Evaluation
+    colors1 = ['#FF6B6B', '#FFA07A', '#FFD93D', '#6BCB77', '#4D96FF', '#9D84B7', '#C0C0C0']#Colors for bar graph
+    grade_counts.plot(kind='bar', color=colors1, edgecolor='black', alpha=0.8)
+    plt.title('Grade Distribution', fontsize=14, fontweight='bold')
+    plt.xlabel('Grade', fontsize=11)
+    plt.ylabel('Number of Students', fontsize=11)
+    plt.xticks(rotation=0)
+    plt.grid(axis='y', alpha=0.3)
+    plt.tight_layout()#For the layout of Graph to be Oraganized
+    plt.savefig(os.path.join(images_path, 'grade_distribution.png'), dpi=300, bbox_inches='tight')
+    plt.close()
+
 
 def main():
     print("="*60)
