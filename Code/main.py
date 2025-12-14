@@ -162,7 +162,10 @@ def calculateGrades(df):
 def generateReports():
     True
 def createVisualizations():
-    True
+    #This checks if images folder exists if it doesnot it creates a new one
+    images_path = os.path.join('Output','Images')
+    if not os.path.exists(images_path):
+        os.makedirs(images_path)
 
 def main():
     print("="*60)
