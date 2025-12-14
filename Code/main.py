@@ -184,6 +184,19 @@ def createVisualizations(df):
     plt.close()
 
 
+    #Pass To Fail Distribution
+    plt.figure(figsize=(8,8))
+    pass_fail = df['status'].value_counts()
+    colors3 = ['#6BCB77', '#FF6B6B']
+    plt.pie(pass_fail, labels=pass_fail.index, autopct='%1.1f%%',
+            colors=colors3, startangle=90,
+            textprops={'fontsize': 12, 'fontweight': 'bold'})
+    plt.title('Pass/Fail Distribution', fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(os.path.join(images_path, 'pass_fail_distribution.png'), dpi=300, bbox_inches='tight')
+    plt.close()
+
+
 def main():
     print("="*60)
     print("SCHOOL GRADING SYSTEM")
