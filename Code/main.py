@@ -259,7 +259,7 @@ def main():
         print(" Calculations complete!")
         
         print("\n[2] Generating reports...")
-        generateReports(df)
+        #generateReports(df)
         print(" Reports generated!")
         
         print("\n[3] Creating visualizations...")
